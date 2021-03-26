@@ -12,3 +12,4 @@ cfg = __C
 
 __C.path = edict()
 __C.path.base = os.path.dirname(os.path.abspath(__file__))
+__C.path.data = os.path.dirname(os.path.abspath(__file__)) + "\\dataSet1\\"
