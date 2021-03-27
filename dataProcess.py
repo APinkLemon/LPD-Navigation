@@ -104,3 +104,10 @@ def npyToPointCloud(npy):
     pointCloud = o3d.geometry.PointCloud()
     pointCloud.points = o3d.utility.Vector3dVector(npy)
     return pointCloud
+
+
+# def storeDataToOne(path):
+#     if os.path.exists(path + "TRAINING_POINT_CLOUD.npy"):
+#         TRAINING_POINT_CLOUD = np.load(path + "TRAINING_POINT_CLOUD.npy")
+#     else:
+

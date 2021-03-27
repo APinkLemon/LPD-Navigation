@@ -12,8 +12,6 @@ import pandas as pd
 from config import cfg
 from sklearn.neighbors import KDTree
 
-basePath = cfg.path.base
-sys.path.append(basePath)
 
 deltaX = 50
 deltaY = 50
@@ -53,7 +51,7 @@ def constructQueryDict(df_centroids, filename):
 
 df_train = pd.DataFrame(columns=['filename', 'posX', 'easting'])
 df_test = pd.DataFrame(columns=['filename', 'posX', 'easting'])
-df_locations = pd.read_csv(basePath + "/dataSet1.csv")
+df_locations = pd.read_csv("../dataSet1.csv")
 df_locations['filename'] = cfg.path.data + df_locations['filename'].astype(str) + ".txt"
 
 for index, row in df_locations.iterrows():

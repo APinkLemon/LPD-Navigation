@@ -1,3 +1,5 @@
 /.idea
 /dataSet1
-**/*.pickle
+/GenerateDataBase/*.pickle
+/dataSetNpy1
+/dataSetPcd1

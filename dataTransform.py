@@ -10,6 +10,8 @@ import numpy as np
 import math
 import os
 import random
+from config import cfg
+from dataProcess import *
 
 
 def RemoveGround(pc, distance_threshold=0.3, sample_size=3, max_iterations=300):  # iteration and time, graph
@@ -118,3 +120,25 @@ def rotatePointCloud(pointCloud, xyzRotation=(np.pi / 2, 0, 0), initPoint=(0, 0,
     mesh = o3d.geometry.TriangleMesh.create_coordinate_frame()
     R = mesh.get_rotation_matrix_from_xyz(xyzRotation)
     return pointCloud.rotate(R, center=initPoint)
+
+
+if __name__ == "__main__":
+    base = cfg.path.raw
+    fileList = getFilePathList(base)
+    file = pathToNpyPath(fileList[9])
+    a = np.load(file)
+    exp = npyToPointCloud(a)
+    exp = rotatePointCloud(exp)
+    a_1 = pointCloudToNpy(exp)
+    b, c = RemoveGround(a_1)
+    print(a_1.shape)
+    print(b.shape)
+    print(c.shape)
+    d = []
+    for i in list(b):
+        if i[2] > -0.5:
+            d.append(i)
+    d = np.array(d)
+    print(d.shape)
+    exp2 = npyToPointCloud(d)
+    visionPointCloud(exp2)
