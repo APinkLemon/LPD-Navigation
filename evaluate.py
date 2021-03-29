@@ -8,14 +8,15 @@ from dataLoader import *
 from torch.backends import cudnn
 
 
+print('#' * 40)
+print("This is evaluate! ")
 cudnn.enabled = True
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 recall_num = 25
-
 EVAL_DATABASE_FILE = 'OxfordDataBase/oxford_evaluation_database.pickle'
 EVAL_QUERY_FILE = 'OxfordDataBase/oxford_evaluation_query.pickle'
 DATABASE_SETS = get_sets_dict(EVAL_DATABASE_FILE)
 QUERY_SETS = get_sets_dict(EVAL_QUERY_FILE)
+print('#' * 40)
 
 
 def evaluate_model(model, tqdm_flag=True):

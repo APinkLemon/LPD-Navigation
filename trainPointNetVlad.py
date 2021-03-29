@@ -126,12 +126,9 @@ def train():
     scheduler = ReduceLROnPlateau(optimizer, 'max', factor=0.2, patience=2, verbose=True, threshold=0.1, min_lr=0.00001)
 
     for epoch in range(starting_epoch, cfg.train.maxEpoch):
-        print('**** EPOCH %03d ****' % (epoch))
-        # lr_temp = get_learning_rate(epoch)
-        # for param_group in optimizer.param_groups:
-        #     param_group["lr"] = lr_temp
-        train_one_epoch(model, division_epoch, TOTAL_ITERATIONS, train_writer, loss_function, epoch,
-                        loader_base, loader_advance, ave_one_percent_recall)
+        print('**** EPOCH %03d ****' % epoch)
+        train_one_epoch(model, division_epoch, TOTAL_ITERATIONS, optimizer, train_writer, loss_function, epoch,
+                        loader_base, loader_advance)
         print("learn rate " + str(optimizer.param_groups[0]['lr']))
         print('EVALUATING...')
         cfg.OUTPUT_FILE = cfg.RESULTS_FOLDER + 'results_' + str(epoch) + '.txt'
@@ -193,11 +190,11 @@ def train_one_epoch(model, division_epoch, TOTAL_ITERATIONS, optimizer, train_wr
             train_writer.add_scalar("Loss", loss.cpu().item(), TOTAL_ITERATIONS)
             train_writer.add_scalar("learn rate", optimizer.param_groups[0]['lr'], TOTAL_ITERATIONS)
             TOTAL_ITERATIONS += cfg.train.batchQueries
-            # log_string("train: ",time()-start)
-            if (TOTAL_ITERATIONS % (int(700 * (epoch + 1))//batch_num*batch_num) ==0):
+            if TOTAL_ITERATIONS % (int(700 * (epoch + 1))//batch_num*batch_num) == 0:
                 update_vectors(model, tqdm_flag=False)
             # if (TOTAL_ITERATIONS % (int(1000 * (epoch + 1)) // batch_num * batch_num) == 0):
-            #     ave_recall, average_similarity_score, ave_one_percent_recall = evaluate.evaluate_model(para.model, tqdm_flag=False)
+            #     ave_recall, average_similarity_score, ave_one_percent_recall =
+            #     evaluate.evaluate_model(para.model, tqdm_flag=False)
             #     log_string('EVAL %% RECALL: %s' % str(ave_one_percent_recall), print_flag=True)
             #     train_writer.add_scalar("one percent recall", ave_one_percent_recall, TOTAL_ITERATIONS)
 

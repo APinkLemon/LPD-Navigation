@@ -26,7 +26,7 @@ def flat(li):
 def get_sets_dict(filename):
     with open(filename, 'rb') as handle:
         trajectories = pickle.load(handle)
-        print("Sets Loaded.")
+        print("Sets Loaded: " + filename)
         return trajectories
 
 
@@ -421,10 +421,11 @@ class Oxford_train_advance(Dataset):
         return self.train_len
 
 
+print('#' * 40)
+print("This is dataProcess!")
 load_fast = cfg.train.loadFast
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 HARD_NEGATIVES = {}
 TEST_QUERIES = get_queries_dict(cfg.path.query + "test_queries_baseline.pickle")
 TRAINING_QUERIES = get_queries_dict(cfg.path.query + "training_queries_baseline.pickle")
 TRAINING_POINT_CLOUD = np.load(cfg.path.data + "TRAINING_POINT_CLOUD.npy")
+print('#' * 40)
