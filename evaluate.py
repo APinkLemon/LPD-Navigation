@@ -82,7 +82,7 @@ def evaluate_model(model, tqdm_flag=True):
     return ave_recall, average_similarity_score, ave_one_percent_recall
 
 
-def get_latent_vectors(model, dict_to_process):
+def get_latent_vectors(model, device, dict_to_process):
     model.eval()
     torch.cuda.empty_cache()
     train_file_idxs = np.arange(0, len(dict_to_process.keys()))

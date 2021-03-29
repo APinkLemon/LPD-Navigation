@@ -9,7 +9,7 @@ import torch.nn as nn
 from torch.backends import cudnn
 from tensorboardX import SummaryWriter
 from torch.utils.data import DataLoader
-from torch.optim.lr_scheduler import ReduceLROnPlateau, StepLR, MultiStepLR
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 import evaluate
 import pointnetVlad as PNV
@@ -120,15 +120,15 @@ def train():
                                 shuffle=False, drop_last=True, num_workers=4)
 
     if starting_epoch > division_epoch + 1:
-        update_vectors(model)
+        update_vectors(model, device)
 
     train_writer = SummaryWriter(os.path.join(cfg.path.logDir, 'train_writer'))
     scheduler = ReduceLROnPlateau(optimizer, 'max', factor=0.2, patience=2, verbose=True, threshold=0.1, min_lr=0.00001)
 
     for epoch in range(starting_epoch, cfg.train.maxEpoch):
         print('**** EPOCH %03d ****' % epoch)
-        train_one_epoch(model, division_epoch, TOTAL_ITERATIONS, optimizer, train_writer, loss_function, epoch,
-                        loader_base, loader_advance)
+        TOTAL_ITERATIONS = train_one_epoch(model, device, division_epoch, TOTAL_ITERATIONS, optimizer, train_writer,
+                                           loss_function, epoch, loader_base, loader_advance)
         print("learn rate " + str(optimizer.param_groups[0]['lr']))
         print('EVALUATING...')
         cfg.OUTPUT_FILE = cfg.RESULTS_FOLDER + 'results_' + str(epoch) + '.txt'
@@ -141,7 +141,7 @@ def train():
         train_writer.add_scalar("Val Recall", ave_one_percent_recall, epoch)
 
 
-def train_one_epoch(model, division_epoch, TOTAL_ITERATIONS, optimizer, train_writer,
+def train_one_epoch(model, device, division_epoch, TOTAL_ITERATIONS, optimizer, train_writer,
                     loss_function, epoch, loader_base, loader_advance):
     TOTAL_ITERATIONS = TOTAL_ITERATIONS
     batch_num = cfg.train.batchQueries
@@ -170,10 +170,8 @@ def train_one_epoch(model, division_epoch, TOTAL_ITERATIONS, optimizer, train_wr
 
     else:
         if epoch == division_epoch + 1:
-            update_vectors(model)
+            update_vectors(model, device)
         for queries, positives, negatives, other_neg in tqdm(loader_advance):
-            from time import time
-            start = time()
             model.train()
             optimizer.zero_grad()
             output_queries, output_positives, output_negatives, output_other_neg = \
@@ -191,12 +189,14 @@ def train_one_epoch(model, division_epoch, TOTAL_ITERATIONS, optimizer, train_wr
             train_writer.add_scalar("learn rate", optimizer.param_groups[0]['lr'], TOTAL_ITERATIONS)
             TOTAL_ITERATIONS += cfg.train.batchQueries
             if TOTAL_ITERATIONS % (int(700 * (epoch + 1))//batch_num*batch_num) == 0:
-                update_vectors(model, tqdm_flag=False)
+                update_vectors(model, device, tqdm_flag=False)
             # if (TOTAL_ITERATIONS % (int(1000 * (epoch + 1)) // batch_num * batch_num) == 0):
             #     ave_recall, average_similarity_score, ave_one_percent_recall =
             #     evaluate.evaluate_model(para.model, tqdm_flag=False)
             #     log_string('EVAL %% RECALL: %s' % str(ave_one_percent_recall), print_flag=True)
             #     train_writer.add_scalar("one percent recall", ave_one_percent_recall, TOTAL_ITERATIONS)
+
+    return TOTAL_ITERATIONS
 
 
 if __name__ == "__main__":

@@ -62,7 +62,7 @@ def load_pc_files(filenames):
     return pcs
 
 
-def update_vectors(model, tqdm_flag=True):
+def update_vectors(model, device, tqdm_flag=True):
     global TRAINING_LATENT_VECTORS
     global TRAINING_QUERIES
 
@@ -260,7 +260,7 @@ def get_random_hard_negatives(query_vec, random_negs, hard_neg_num):
     return hard_negs
 
 
-def get_feature_representation(filename, model):
+def get_feature_representation(filename, model, device):
     model.eval()
     queries = load_pc_files([filename])
     queries = np.expand_dims(queries, axis=1)
