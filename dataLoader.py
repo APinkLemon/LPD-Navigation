@@ -23,6 +23,13 @@ def flat(li):
             yield from flat(k)
 
 
+def get_sets_dict(filename):
+    with open(filename, 'rb') as handle:
+        trajectories = pickle.load(handle)
+        print("Sets Loaded.")
+        return trajectories
+
+
 def get_queries_dict(filename):
     # key:{'query':file,'positives':[files],'negatives:[files], 'neighbors':[keys]}
     with open(filename, 'rb') as handle:
@@ -55,7 +62,7 @@ def load_pc_files(filenames):
     return pcs
 
 
-def update_vectors(args, model, tqdm_flag=True):
+def update_vectors(model, tqdm_flag=True):
     global TRAINING_LATENT_VECTORS
     global TRAINING_QUERIES
 
@@ -68,7 +75,7 @@ def update_vectors(args, model, tqdm_flag=True):
 
     train_file_idxs = np.arange(0, len(TRAINING_QUERIES.keys()))
 
-    batch_num = args.eval_batch_size * (1 + args.positives_per_query + args.negatives_per_query)
+    batch_num = cfg.train.batchEval * (1 + cfg.train.positives_per_query + cfg.train.negatives_per_query)
     # log_string("\n args: ",args.batch_num_queries,args.positives_per_query,args.negatives_per_query)
     q_output = []
 
