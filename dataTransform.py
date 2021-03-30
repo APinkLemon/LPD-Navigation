@@ -122,6 +122,37 @@ def rotatePointCloud(pointCloud, xyzRotation=(np.pi / 2, 0, 0), initPoint=(0, 0,
     return pointCloud.rotate(R, center=initPoint)
 
 
+def downPcdVoxel(pointCloud, targetNum=4096):
+    pcd = pointCloud
+    voxel_size = 1
+    shape = np.asarray(pcd.points).shape
+    print(shape)
+    while shape[0] > targetNum:
+        pcd = o3d.geometry.PointCloud.voxel_down_sample(pcd, voxel_size=voxel_size)
+        shape = np.asarray(pcd.points).shape
+        if voxel_size > 0:
+            voxel_size -= 0.01
+        else:
+            break
+        print(np.asarray(pcd.points).shape)
+    newNp = np.concatenate((np.asarray(pcd.points), np.zeros((targetNum - np.asarray(pcd.points).shape[0], 3))), 0)
+    print(newNp.shape)
+    newPcd = normalizePcd(npyToPointCloud(newNp))
+    return newPcd
+
+
+def normalizePcd(pointCloud):
+    pcd = pointCloud
+    aabb = pcd.get_axis_aligned_bounding_box()  # o3d.geometry.KDTreeSearchParamHybrid(...)
+    center = aabb.get_center()
+    extent = aabb.get_extent()
+    print(extent)
+    maxExtend = max(extent[0], extent[1], extent[2])
+    pcd = pcd.translate(-center)
+    pcd.scale(1 / maxExtend, center=[0.0, 0.0, 0.0])
+    return pcd
+
+
 if __name__ == "__main__":
     base = cfg.path.raw
     fileList = getFilePathList(base)
@@ -129,16 +160,22 @@ if __name__ == "__main__":
     a = np.load(file)
     exp = npyToPointCloud(a)
     exp = rotatePointCloud(exp)
-    a_1 = pointCloudToNpy(exp)
-    b, c = RemoveGround(a_1)
-    print(a_1.shape)
-    print(b.shape)
-    print(c.shape)
-    d = []
-    for i in list(b):
-        if i[2] > -0.5:
-            d.append(i)
-    d = np.array(d)
-    print(d.shape)
-    exp2 = npyToPointCloud(d)
-    visionPointCloud(exp2)
+    exp = pointCloudToNpy(exp)
+    b, c = RemoveGround(exp)
+    exp = npyToPointCloud(b)
+    newExp = downPcdVoxel(exp)
+    visionPointCloud(newExp)
+    # exp = rotatePointCloud(exp)
+    # a_1 = pointCloudToNpy(exp)
+    # b, c = RemoveGround(a_1)
+    # print(a_1.shape)
+    # print(b.shape)
+    # print(c.shape)
+    # d = []
+    # for i in list(b):
+    #     if i[2] > -0.5:
+    #         d.append(i)
+    # d = np.array(d)
+    # print(d.shape)
+    # exp2 = npyToPointCloud(d)
+    # visionPointCloud(exp2)

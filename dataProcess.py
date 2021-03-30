@@ -52,7 +52,7 @@ def storeDataToPcd(path):
 
 
 def visionPointCloud(pointCloud):
-    axis = o3d.geometry.TriangleMesh.create_coordinate_frame(size=5, origin=[0.0, 0.0, 0.0])
+    axis = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.05, origin=[0.0, 0.0, 0.0])
     vis = o3d.visualization.Visualizer()
     vis.create_window()
     vis.add_geometry(pointCloud)

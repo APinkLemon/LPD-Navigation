@@ -64,7 +64,6 @@ def load_pc_files(filenames):
 
 def update_vectors(model, device, tqdm_flag=True):
     global TRAINING_LATENT_VECTORS
-    global TRAINING_QUERIES
 
     torch.cuda.empty_cache()
 
@@ -425,6 +424,7 @@ print('#' * 40)
 print("This is dataProcess!")
 load_fast = cfg.train.loadFast
 HARD_NEGATIVES = {}
+TRAINING_LATENT_VECTORS = []
 TEST_QUERIES = get_queries_dict(cfg.path.query + "test_queries_baseline.pickle")
 TRAINING_QUERIES = get_queries_dict(cfg.path.query + "training_queries_baseline.pickle")
 TRAINING_POINT_CLOUD = np.load(cfg.path.data + "TRAINING_POINT_CLOUD.npy")
