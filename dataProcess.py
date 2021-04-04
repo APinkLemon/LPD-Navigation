@@ -4,7 +4,7 @@
 日期：2021年03月14日
 """
 
-# import open3d as o3d
+import open3d as o3d
 import numpy as np
 import glob
 import os

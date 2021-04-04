@@ -33,7 +33,6 @@ def construct_query_and_database_sets(folders, p, output_name):
     database_trees = []
     test_trees = []
     for folder in folders:
-        print(folder)
         df_database = pd.DataFrame(columns=['file', 'northing', 'easting'])
         df_test = pd.DataFrame(columns=['file', 'northing', 'easting'])
 
@@ -51,10 +50,11 @@ def construct_query_and_database_sets(folders, p, output_name):
     test_sets = []
     database_sets = []
     for folder in folders:
+        print(folder)
         database = {}
         test = {}
         df_locations = pd.read_csv(folder, sep=',')
-        df_locations['timestamp'] = "dataEvaluate1/" + df_locations['timestamp'].astype(str) + ".npy"
+        df_locations['timestamp'] = folder[3:-4] + "/" + df_locations['timestamp'].astype(str) + ".npy"
         df_locations = df_locations.rename(columns={'timestamp': 'file'})
         for index, row in df_locations.iterrows():
             if check_in_test_set(row['northing'], row['easting'], p, x_width, y_width):
@@ -68,7 +68,7 @@ def construct_query_and_database_sets(folders, p, output_name):
     for i in range(len(database_sets)):
         tree = database_trees[i]
         for j in range(len(test_sets)):
-            if (i == j):
+            if i == j:
                 continue
             for key in range(len(test_sets[j].keys())):
                 coor = np.array(
