@@ -26,7 +26,7 @@ dataDict = {"filename": filename, "posX": posX, "posY": posY}
 data = pd.DataFrame(dataDict)
 print(data)
 data.to_csv(
-    '../dataSet1.csv',
+    '../dataTrain1.csv',
     index=False,  # 不保存行索引
     header=True,  # 保存列索引
 )

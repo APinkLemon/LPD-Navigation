@@ -11,12 +11,12 @@ cfg = __C
 
 __C.path = edict()
 __C.path.raw = "dataSet3/"
-__C.path.query = "OxfordDataBase/"
-__C.path.data = "OxfordDataBase/"
+__C.path.query = "GenerateDataBase/"
+__C.path.data = "dataTrain1/"
 __C.path.pretrain = "Pretrain/model.pth"
 __C.path.savePath = "Model"
 __C.path.saveFile = "model1"
-__C.path.logDir = "trainWriter"
+__C.path.logDir = "TrainWriter"
 
 __C.train = edict()
 __C.train.device = "cuda:0"

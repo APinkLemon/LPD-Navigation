@@ -49,10 +49,10 @@ def constructQueryDict(df_centroids, filename):
     print("Construct Training Baseline Done: " + filename + "!")
 
 
-df_train = pd.DataFrame(columns=['filename', 'posX', 'easting'])
-df_test = pd.DataFrame(columns=['filename', 'posX', 'easting'])
+df_train = pd.DataFrame(columns=['filename', 'posX', 'posY'])
+df_test = pd.DataFrame(columns=['filename', 'posX', 'posY'])
 df_locations = pd.read_csv("../dataSet1.csv")
-df_locations['filename'] = cfg.path.data + df_locations['filename'].astype(str) + ".txt"
+df_locations['filename'] = cfg.path.data + df_locations['filename'].astype(str) + ".npy"
 
 for index, row in df_locations.iterrows():
     if checkInTestSet(row['posX'], row['posY'], p, deltaX, deltaY):

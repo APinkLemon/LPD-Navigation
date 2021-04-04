@@ -1,10 +1,12 @@
 /.idea
 /dataSet1
 /GenerateDataBase/*.pickle
+/GenerateDataBase/*.npy
 /dataSetNpy1
 /dataSetPcd1
 /OxfordDataBase
 /trainWriter
+/TrainWriter
 /Pretrain
 /*.bin
 /*.pickle
@@ -14,3 +16,4 @@
 /dataEvaluate1
 /dataEvaluate2
 /dataSetNpy3
+/*.csv
