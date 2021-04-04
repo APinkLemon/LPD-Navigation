@@ -6,6 +6,7 @@
 
 import open3d as o3d
 import time
+import pickle
 import numpy as np
 import math
 import os
@@ -156,15 +157,24 @@ def normalizePcd(pointCloud):
 if __name__ == "__main__":
     base = cfg.path.raw
     fileList = getFilePathList(base)
-    file = pathToNpyPath(fileList[9])
-    a = np.load(file)
-    exp = npyToPointCloud(a)
-    exp = rotatePointCloud(exp)
-    exp = pointCloudToNpy(exp)
-    b, c = RemoveGround(exp)
-    exp = npyToPointCloud(b)
-    newExp = downPcdVoxel(exp)
-    visionPointCloud(newExp)
+    print(len(fileList))
+    for i in range(len(fileList)):
+        print("#"*200)
+        print(i)
+        file = pathToNpyPath(fileList[i])
+        print(file)
+
+        # exp = npyToPointCloud(a)
+        # exp = rotatePointCloud(exp)
+        # exp = pointCloudToNpy(exp)
+        # b, c = RemoveGround(exp)
+        # exp = npyToPointCloud(b)
+        # newExp = downPcdVoxel(exp)
+        # exp = pointCloudToNpy(newExp)
+        # savePath = "dataEvaluate2" + pathToNpyPath(fileList[i])[11:]
+        # print(savePath)
+        # np.save(savePath, exp)
+
     # exp = rotatePointCloud(exp)
     # a_1 = pointCloudToNpy(exp)
     # b, c = RemoveGround(a_1)
@@ -179,3 +189,11 @@ if __name__ == "__main__":
     # print(d.shape)
     # exp2 = npyToPointCloud(d)
     # visionPointCloud(exp2)
+
+    # a = open("oxford_evaluation_query.pickle", "rb")
+    # a = pickle.load(a)
+    # print(a[22][2])
+    # print("#"*100)
+    # a = open("GenerateDataBase/trainQueriesBaseline.pickle", "rb")
+    # a = pickle.load(a)
+    # print(a[0])

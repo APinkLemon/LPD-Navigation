@@ -6,3 +6,11 @@
 /OxfordDataBase
 /trainWriter
 /Pretrain
+/*.bin
+/*.pickle
+/checkPoints
+/dataTrain1
+/dataSet3
+/dataEvaluate1
+/dataEvaluate2
+/dataSetNpy3

@@ -10,7 +10,7 @@ __C = edict()
 cfg = __C
 
 __C.path = edict()
-__C.path.raw = "dataSet1/"
+__C.path.raw = "dataSet3/"
 __C.path.query = "OxfordDataBase/"
 __C.path.data = "OxfordDataBase/"
 __C.path.pretrain = "Pretrain/model.pth"
