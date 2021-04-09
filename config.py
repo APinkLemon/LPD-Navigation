@@ -10,10 +10,10 @@ __C = edict()
 cfg = __C
 
 __C.path = edict()
-__C.path.raw = "dataSet3/"
+__C.path.raw = "dataEvaluate1/"
 __C.path.query = "GenerateDataBase/"
-__C.path.data = "dataTrain1/"
-__C.path.pretrain = "Pretrain/model.pth"
+__C.path.data = "GenerateDataBase/"
+__C.path.pretrain = "Pretrain/best-model.ckpt"
 __C.path.savePath = "Model"
 __C.path.saveFile = "model1"
 __C.path.logDir = "TrainWriter"

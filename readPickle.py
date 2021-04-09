@@ -15,7 +15,7 @@ seq_list = sorted(glob.glob("dataEvaluate2" + "/*"))
 print(len(seq_list))
 b = pickle.load(b)
 print(b[1])
-for i in range(58):
+for i in range(57):
     print(b[1][i]['query'], seq_list[i])
     c = np.load(b[1][i]['query'])
 print(len(b[1]))

@@ -40,13 +40,12 @@ def get_queries_dict(filename):
 
 def load_pc_file(filename):
     # returns Nx3 matrix
-    pc = np.fromfile(os.path.join(cfg.DATASET_FOLDER, filename), dtype=np.float64)
+    pc = np.load(os.path.join(filename))
 
-    if(pc.shape[0] != 4096*3):
+    if pc.shape[0] != 4096:
         print("Error in pointcloud shape")
         return np.array([])
 
-    pc = np.reshape(pc,(pc.shape[0]//3, 3))
     return pc
 
 
@@ -425,7 +424,7 @@ print("This is dataProcess!")
 load_fast = cfg.train.loadFast
 HARD_NEGATIVES = {}
 TRAINING_LATENT_VECTORS = []
-TEST_QUERIES = get_queries_dict(cfg.path.query + "test_queries_baseline.pickle")
-TRAINING_QUERIES = get_queries_dict(cfg.path.query + "training_queries_baseline.pickle")
-TRAINING_POINT_CLOUD = np.load(cfg.path.data + "TRAINING_POINT_CLOUD.npy")
+TEST_QUERIES = get_queries_dict(cfg.path.query + "testQueriesBaseline.pickle")
+TRAINING_QUERIES = get_queries_dict(cfg.path.query + "trainQueriesBaseline.pickle")
+TRAINING_POINT_CLOUD = np.load(cfg.path.data + "TRAINING_POINT_CLOUD_NEW.npy")
 print('#' * 40)

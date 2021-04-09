@@ -200,6 +200,41 @@ def train_one_epoch(model, device, division_epoch, TOTAL_ITERATIONS, optimizer, 
 
 
 if __name__ == "__main__":
+    trainMode = 0
     cudnn.enabled = cfg.train.cudnn
-    train()
-    print("Train Finished!")
+    if trainMode:
+        print("Start Train!")
+        train()
+        print("Train Finished!")
+    else:
+        print("Start Eval!")
+        model = PNV.PointNetVlad(
+            emb_dims=cfg.train.embDims,
+            num_points=cfg.train.numPoints,
+            featnet=cfg.train.featureNet,
+            xyz_trans=cfg.train.xyzTransform,
+            feature_transform=cfg.train.featureTransform
+        )
+
+        device = cfg.train.device
+        if torch.cuda.is_available():
+            model = model.cuda(device)
+        else:
+            model = model.cpu()
+
+        if os.path.exists(cfg.path.pretrain):
+            # print("*"*100)
+            # for key, value in torch.load(cfg.path.pretrain)['state_dict'].items():
+            #     print(key)
+            # sys.exit(996)
+            model.load_state_dict(torch.load(cfg.path.pretrain), strict=False)
+            print("Load Pretrained Model!")
+        else:
+            sys.exit(995)
+
+        # for name, parameters in model.named_parameters():
+        #     print(name, ':')
+
+        ave_recall, average_similarity_score, ave_one_percent_recall = evaluate.evaluate_model(model, tqdm_flag=True)
+
+        print("ave_one_percent_recall:", ave_one_percent_recall)

@@ -10,8 +10,6 @@ import torch.nn.functional as F
 
 
 def knn(x, k):
-    print("knn_init:")
-    print(x.shape)
     inner = -2 * torch.matmul(x.transpose(2, 1).contiguous(), x)  # [b,num,num]
     # 求坐标（维度空间）的平方和
     xx = torch.sum(x ** 2, dim=1, keepdim=True)  # [b,1,num] #x ** 2 表示点平方而不是x*x
@@ -20,8 +18,6 @@ def knn(x, k):
     del inner, x
     pairwise_distance = pairwise_distance - xx.transpose(2, 1)  # [b,num,num]
     idx = pairwise_distance.topk(k=k, dim=-1)[1]  # (batch_size, num_points, k)
-    print("knn_out:")
-    print(idx.shape)
     return idx
 
 

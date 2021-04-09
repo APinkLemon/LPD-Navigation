@@ -81,8 +81,8 @@ def construct_query_and_database_sets(folders, p, output_name):
     output_to_file(test_sets, output_name + '_evaluation_query.pickle')
 
 
-x_width = 150
-y_width = 150
+x_width = 10
+y_width = 10
 
 p1 = [5735712.768124, 620084.402381]
 p2 = [5735611.299219, 620540.270327]
@@ -95,6 +95,6 @@ p7 = [93.33673491848327, 95.09738907151828]
 p8 = [67.37772388791976, -44.74183118168341]
 
 p_dict = {"oxford": [p1, p2, p3, p4], "webots": [p5, p6, p7, p8]}
-folders = ["../dataEvaluate1.csv", "../dataEvaluate2.csv"]
+folders_in = ["../dataEvaluate1.csv", "../dataEvaluate2.csv"]
 p_webots = p_dict["webots"]
-construct_query_and_database_sets(folders, p_webots, "webots")
+construct_query_and_database_sets(folders_in, p_webots, "webots")
