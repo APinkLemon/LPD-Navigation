@@ -9,6 +9,10 @@ from dataLoader import *
 from torch.backends import cudnn
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.gridspec import GridSpec
+from dataProcess import *
+import math
 
 
 print('#' * 40)
@@ -160,6 +164,8 @@ def get_recall(m, n, DATABASE_VECTORS, QUERY_VECTORS, render = True):
     xpList = []
     ytList = []
     ypList = []
+    barX = [1 + i for i in range(len(queries_output))]
+    barY = [0 for _ in range(len(queries_output))]
 
     database_nbrs = KDTree(database_output)
 
@@ -183,6 +189,7 @@ def get_recall(m, n, DATABASE_VECTORS, QUERY_VECTORS, render = True):
         if render:
             print("%" * 150)
             print("This is True: ")
+            print(i)
             print(QUERY_SETS[n][i])
             xT = QUERY_SETS[n][i]['northing']
             yT = QUERY_SETS[n][i]['easting']
@@ -193,16 +200,58 @@ def get_recall(m, n, DATABASE_VECTORS, QUERY_VECTORS, render = True):
             xP = DATABASE_SETS[m][indices[0][0]]['northing']
             yP = DATABASE_SETS[m][indices[0][0]]['easting']
 
+            gs = GridSpec(3, 12)
             fig = plt.figure()
-            ax = plt.axes(xlim=(-100, 150), ylim=(-100, 150))
+            ax1 = fig.add_subplot(gs[0:2, 0:3])
+            ax1.scatter(xtList, ytList, marker='x', color='b')
+            ax1.scatter(xpList, ypList, marker='x', color='r')
+            ax1.scatter([xT], [yT], marker='*', color='b')
+            ax1.scatter([xP], [yP], marker='*', color='r')
             xtList.append(xT)
             xpList.append(xP)
             ytList.append(yT)
             ypList.append(yP)
-            plt.scatter(xtList, ytList, marker='o')
-            plt.scatter(xpList, ypList, marker='^')
-            import time
-            time.sleep(0.5)
+            plt.xlim((-60, 120))
+            plt.ylim((-50, 120))
+
+            dataTrue = np.load(QUERY_SETS[n][i]['query'])
+            x1 = dataTrue[:, 0]
+            y1 = dataTrue[:, 1]
+            z1 = dataTrue[:, 2]
+
+            dataEval = np.load(DATABASE_SETS[m][indices[0][0]]['query'])
+            x2 = dataEval[:, 0]
+            y2 = dataEval[:, 1]
+            z2 = dataEval[:, 2]
+
+            ax2 = fig.add_subplot(gs[0:2, 4:7], projection='3d')
+            ax2.scatter(x1, y1, z1, s=1)
+            plt.xlim((-0.5, 0.5))
+            plt.ylim((-0.5, 0.5))
+
+            ax2.set_xlabel('X', fontdict={'size': 10, 'color': 'red'})
+            ax2.set_ylabel('Y', fontdict={'size': 10, 'color': 'red'})
+            ax2.set_zlabel('Z', fontdict={'size': 10, 'color': 'red'})
+            ax2.view_init(elev=60, azim=45)
+
+            ax3 = fig.add_subplot(gs[0:2, 8:11], projection='3d')
+            ax3.scatter(x2, y2, z2, s=1)
+            plt.xlim((-0.5, 0.5))
+            plt.ylim((-0.5, 0.5))
+
+            ax3.set_xlabel('X', fontdict={'size': 10, 'color': 'red'})
+            ax3.set_ylabel('Y', fontdict={'size': 10, 'color': 'red'})
+            ax3.set_zlabel('Z', fontdict={'size': 10, 'color': 'red'})
+            ax3.view_init(elev=60, azim=45)
+
+            barY[i] = ((xT - xP) ** 2 + (yT - yP) ** 2) ** 0.5
+            print(barY[i])
+
+            ax4 = fig.add_subplot(gs[2, 0:12])
+            ax4.bar(barX, barY)
+            plt.ylim((0, 200))
+
+            plt.tight_layout()
             plt.show()
 
         # 遍历recal_num得到在不同指标下的结果
