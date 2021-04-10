@@ -7,6 +7,8 @@
 import sys
 from dataLoader import *
 from torch.backends import cudnn
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 
 
 print('#' * 40)
@@ -38,7 +40,6 @@ def evaluate_model(model, tqdm_flag=True):
 
     # 总共23个子图
     # 获得每个子地图的每一帧点云的描述子
-    print("Hello")
     for i in fun_tqdm(range(len(DATABASE_SETS))):
         DATABASE_VECTORS.append(get_latent_vectors(model, DATABASE_SETS[i]))
 
@@ -66,7 +67,6 @@ def evaluate_model(model, tqdm_flag=True):
         print("ave_recall: "+str(ave_recall))
     else:
         print("ave_recall: "+str(ave_recall), print_flag=False)
-
 
     # print(similarity)
     average_similarity_score = np.mean(similarity)
@@ -111,7 +111,7 @@ def get_latent_vectors(model, dict_to_process, device=cfg.train.device):
         out = out.detach().cpu().numpy()
         out = np.squeeze(out)
         # del feed_tensor
-        #out = np.vstack((o1, o2, o3, o4))
+        # out = np.vstack((o1, o2, o3, o4))
         q_output.append(out)
 
     q_output = np.array(q_output)
@@ -143,16 +143,23 @@ def get_latent_vectors(model, dict_to_process, device=cfg.train.device):
     torch.cuda.empty_cache()
     model.train()
     # print(q_output.shape)
-    # print(q_output.shape, np.asarray(q_output).mean(),np.asarray(q_output).reshape(-1,256).min(),np.asarray(q_output).reshape(-1,256).max())
+    # print(q_output.shape, np.asarray(q_output).mean(),np.asarray(q_output).reshape(-1,256).min(),
+    # np.asarray(q_output).reshape(-1,256).max())
     return q_output
 
 
-def get_recall(m, n, DATABASE_VECTORS, QUERY_VECTORS):
+def get_recall(m, n, DATABASE_VECTORS, QUERY_VECTORS, render = True):
 
     database_output = DATABASE_VECTORS[m]
     queries_output = QUERY_VECTORS[n]
-    print(len(database_output))
-    print(len(queries_output))
+
+    if render:
+        print(database_output.shape)
+        print(queries_output.shape)
+    xtList = []
+    xpList = []
+    ytList = []
+    ypList = []
 
     database_nbrs = KDTree(database_output)
 
@@ -172,8 +179,32 @@ def get_recall(m, n, DATABASE_VECTORS, QUERY_VECTORS):
         # 被评估数
         num_evaluated += 1
         # 得到该点云在第m个子图的实际检索点云序列
-        distances, indices = database_nbrs.query(
-            np.array([queries_output[i]]), k=recall_num)
+        distances, indices = database_nbrs.query(np.array([queries_output[i]]), k=recall_num)
+        if render:
+            print("%" * 150)
+            print("This is True: ")
+            print(QUERY_SETS[n][i])
+            xT = QUERY_SETS[n][i]['northing']
+            yT = QUERY_SETS[n][i]['easting']
+            print("This is output: ")
+            print(true_neighbors)
+            print(indices[0][0])
+            print(DATABASE_SETS[m][indices[0][0]])
+            xP = DATABASE_SETS[m][indices[0][0]]['northing']
+            yP = DATABASE_SETS[m][indices[0][0]]['easting']
+
+            fig = plt.figure()
+            ax = plt.axes(xlim=(-100, 150), ylim=(-100, 150))
+            xtList.append(xT)
+            xpList.append(xP)
+            ytList.append(yT)
+            ypList.append(yP)
+            plt.scatter(xtList, ytList, marker='o')
+            plt.scatter(xpList, ypList, marker='^')
+            import time
+            time.sleep(0.5)
+            plt.show()
+
         # 遍历recal_num得到在不同指标下的结果
         for j in range(len(indices[0])):
             # 如果第j个候选是真实值
