@@ -251,7 +251,11 @@ def get_recall(m, n, DATABASE_VECTORS, QUERY_VECTORS, render = True):
             ax4.bar(barX, barY)
             plt.ylim((0, 200))
 
-            plt.tight_layout()
+            # plt.tight_layout()
+            save = False
+            if save:
+                import time
+                plt.savefig("Img/" + str(time.time())[0:10] + str(time.time())[11:14] + ".jpg")
             plt.show()
 
         # 遍历recal_num得到在不同指标下的结果
