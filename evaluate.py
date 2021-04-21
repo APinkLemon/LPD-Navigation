@@ -200,11 +200,11 @@ def get_recall(m, n, DATABASE_VECTORS, QUERY_VECTORS, render = True):
             xP = DATABASE_SETS[m][indices[0][0]]['northing']
             yP = DATABASE_SETS[m][indices[0][0]]['easting']
 
-            gs = GridSpec(3, 12)
+            gs = GridSpec(3, 2)
             fig = plt.figure()
-            ax1 = fig.add_subplot(gs[0:2, 0:3])
-            ax1.scatter(xtList, ytList, marker='x', color='b')
-            ax1.scatter(xpList, ypList, marker='x', color='r')
+            ax1 = fig.add_subplot(gs[0:2, 0:1])
+            # ax1.scatter(xtList, ytList, marker='x', color='b')
+            # ax1.scatter(xpList, ypList, marker='x', color='r')
             ax1.scatter([xT], [yT], marker='*', color='b')
             ax1.scatter([xP], [yP], marker='*', color='r')
             xtList.append(xT)
@@ -224,7 +224,7 @@ def get_recall(m, n, DATABASE_VECTORS, QUERY_VECTORS, render = True):
             y2 = dataEval[:, 1]
             z2 = dataEval[:, 2]
 
-            ax2 = fig.add_subplot(gs[0:2, 4:7], projection='3d')
+            ax2 = fig.add_subplot(gs[0, 1], projection='3d')
             ax2.scatter(x1, y1, z1, s=1)
             plt.xlim((-0.5, 0.5))
             plt.ylim((-0.5, 0.5))
@@ -234,7 +234,7 @@ def get_recall(m, n, DATABASE_VECTORS, QUERY_VECTORS, render = True):
             ax2.set_zlabel('Z', fontdict={'size': 10, 'color': 'red'})
             ax2.view_init(elev=60, azim=45)
 
-            ax3 = fig.add_subplot(gs[0:2, 8:11], projection='3d')
+            ax3 = fig.add_subplot(gs[1, 1], projection='3d')
             ax3.scatter(x2, y2, z2, s=1)
             plt.xlim((-0.5, 0.5))
             plt.ylim((-0.5, 0.5))
@@ -247,12 +247,11 @@ def get_recall(m, n, DATABASE_VECTORS, QUERY_VECTORS, render = True):
             barY[i] = ((xT - xP) ** 2 + (yT - yP) ** 2) ** 0.5
             print(barY[i])
 
-            ax4 = fig.add_subplot(gs[2, 0:12])
+            ax4 = fig.add_subplot(gs[2, :])
             ax4.bar(barX, barY)
             plt.ylim((0, 200))
-
-            # plt.tight_layout()
-            save = False
+            plt.tight_layout()
+            save = True
             if save:
                 import time
                 plt.savefig("Img/" + str(time.time())[0:10] + str(time.time())[11:14] + ".jpg")

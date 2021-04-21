@@ -227,7 +227,8 @@ if __name__ == "__main__":
             # for key, value in torch.load(cfg.path.pretrain)['state_dict'].items():
             #     print(key)
             # sys.exit(996)
-            model.load_state_dict(torch.load(cfg.path.pretrain), strict=False)
+            modelDict = torch.load(cfg.path.pretrain)
+            model.load_state_dict(modelDict["state_dict"], strict=True)
             print("Load Pretrained Model!")
         else:
             sys.exit(995)

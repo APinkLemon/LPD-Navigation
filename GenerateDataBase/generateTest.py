@@ -15,10 +15,13 @@ from config import cfg
 
 
 def check_in_test_set(northing, easting, points, x_width, y_width):
-    in_test_set = False
+    in_test_set = True
     for point in points:
+        # if point[0] - x_width < northing < point[0] + x_width and point[1] - y_width < easting < point[1] + y_width:
+        #     in_test_set = True
+        #     break
         if point[0] - x_width < northing < point[0] + x_width and point[1] - y_width < easting < point[1] + y_width:
-            in_test_set = True
+            in_test_set = False
             break
     return in_test_set
 
@@ -76,7 +79,8 @@ def construct_query_and_database_sets(folders, p, output_name):
                 index = tree.query_radius(coor, r=25)
                 # indices of the positive matches in database i of each query (key) in test set j
                 test_sets[j][key][i] = index[0].tolist()
-
+    print(len(database_sets[0]))
+    print(len(test_sets[0]))
     output_to_file(database_sets, output_name + '_evaluation_database.pickle')
     output_to_file(test_sets, output_name + '_evaluation_query.pickle')
 

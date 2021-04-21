@@ -24,7 +24,7 @@ size = (imgInfo[1], imgInfo[0])
 fourcc = cv2.VideoWriter_fourcc(*"mp4v")
 
 # 定义写入图片的策略
-videoWrite = cv2.VideoWriter('output.mp4', fourcc, fps, size)
+videoWrite = cv2.VideoWriter('FirstEvaluateOther.mp4', fourcc, fps, size)
 
 out_num = len(fileList)
 for i in range(0, out_num):
