@@ -152,7 +152,7 @@ def get_latent_vectors(model, dict_to_process, device=cfg.train.device):
     return q_output
 
 
-def get_recall(m, n, DATABASE_VECTORS, QUERY_VECTORS, render = True):
+def get_recall(m, n, DATABASE_VECTORS, QUERY_VECTORS, render=True):
 
     database_output = DATABASE_VECTORS[m]
     queries_output = QUERY_VECTORS[n]

@@ -28,6 +28,7 @@ __C.train.momentum = 0.9
 __C.train.batchQueries = 1
 __C.train.batchEval = 1
 
+__C.train.featureDim = 256
 __C.train.numPoints = 4096
 __C.train.embDims = 1024
 __C.train.featureNet = "lpdnetorigin"

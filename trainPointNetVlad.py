@@ -60,7 +60,7 @@ def run_model(model, queries, positives, negatives, other_neg, require_grad=True
     else:
         with torch.no_grad():
             output = model(feed_tensor)
-    output = output.view(cfg.train.batchQueries, -1, cfg.FEATURE_OUTPUT_DIM)
+    output = output.view(cfg.train.batchQueries, -1, cfg.train.featureDim)
     o1, o2, o3, o4 = torch.split(
         output, [1, cfg.train.positives_per_query, cfg.train.negatives_per_query, 1], dim=1)
     return o1, o2, o3, o4
