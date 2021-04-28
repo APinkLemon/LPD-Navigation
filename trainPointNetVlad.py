@@ -153,7 +153,7 @@ def train_one_epoch(model, device, division_epoch, TOTAL_ITERATIONS, optimizer, 
                 run_model(model, queries, positives, negatives, other_neg)
             loss = loss_function(output_queries, output_positives, output_negatives, output_other_neg,
                                  cfg.loss.margin_1, cfg.loss.margin_2, use_min=cfg.loss.triplet_use_best_positives,
-                                 lazy=cfg.loss.loss_lazy, ignore_zero_loss=cfg.loss.loss_ignore_zero_batch)
+                                 lazy=cfg.loss.loss_lazy, ignore_zero_loss=cfg.loss.ignore_zero_loss)
             loss.backward()
             optimizer.step()
             train_writer.add_scalar("epoch", epoch, TOTAL_ITERATIONS)
@@ -179,7 +179,7 @@ def train_one_epoch(model, device, division_epoch, TOTAL_ITERATIONS, optimizer, 
             # log_string("train: ",time()-start)
             loss = loss_function(output_queries, output_positives, output_negatives, output_other_neg,
                                  cfg.loss.margin_1, cfg.loss.margin_2, use_min=cfg.loss.triplet_use_best_positives,
-                                 lazy=cfg.loss.loss_lazy, ignore_zero_loss=cfg.loss.loss_ignore_zero_batch)
+                                 lazy=cfg.loss.loss_lazy, ignore_zero_loss=cfg.loss.loss_ignore_zero_loss)
             # log_string("train: ",time()-start)
             # 比较耗时
             loss.backward()
@@ -200,7 +200,7 @@ def train_one_epoch(model, device, division_epoch, TOTAL_ITERATIONS, optimizer, 
 
 
 if __name__ == "__main__":
-    trainMode = 0
+    trainMode = 1
     cudnn.enabled = cfg.train.cudnn
     if trainMode:
         print("Start Train!")

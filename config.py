@@ -51,6 +51,7 @@ __C.loss.margin_2 = 0.2
 __C.loss.triplet_use_best_positives = True
 __C.loss.loss_lazy = True
 __C.loss.ignore_zero_loss = False
+__C.loss.ignore_zero_batch = False
 
 
 __C.net = edict()
