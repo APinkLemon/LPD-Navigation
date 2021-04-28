@@ -152,7 +152,7 @@ def get_latent_vectors(model, dict_to_process, device=cfg.train.device):
     return q_output
 
 
-def get_recall(m, n, DATABASE_VECTORS, QUERY_VECTORS, render=True):
+def get_recall(m, n, DATABASE_VECTORS, QUERY_VECTORS, render=False):
 
     database_output = DATABASE_VECTORS[m]
     queries_output = QUERY_VECTORS[n]
@@ -214,12 +214,12 @@ def get_recall(m, n, DATABASE_VECTORS, QUERY_VECTORS, render=True):
             plt.xlim((-60, 120))
             plt.ylim((-50, 120))
 
-            dataTrue = np.load(QUERY_SETS[n][i]['query'])
+            dataTrue = np.load("BenchmarkDatasets/" + QUERY_SETS[n][i]['query'])
             x1 = dataTrue[:, 0]
             y1 = dataTrue[:, 1]
             z1 = dataTrue[:, 2]
 
-            dataEval = np.load(DATABASE_SETS[m][indices[0][0]]['query'])
+            dataEval = np.load("BenchmarkDatasets/" + DATABASE_SETS[m][indices[0][0]]['query'])
             x2 = dataEval[:, 0]
             y2 = dataEval[:, 1]
             z2 = dataEval[:, 2]
