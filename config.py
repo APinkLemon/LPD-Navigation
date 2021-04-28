@@ -17,6 +17,8 @@ __C.path.pretrain = "Pretrain/best-model.ckpt"
 __C.path.savePath = "Model"
 __C.path.saveFile = "model1"
 __C.path.logDir = "TrainWriter"
+__C.path.resultsFolder = "results/"
+__C.path.outputFile = " "
 
 __C.train = edict()
 __C.train.device = "cuda:0"

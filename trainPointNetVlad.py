@@ -131,7 +131,7 @@ def train():
                                            loss_function, epoch, loader_base, loader_advance)
         print("learn rate " + str(optimizer.param_groups[0]['lr']))
         print('EVALUATING...')
-        cfg.OUTPUT_FILE = cfg.RESULTS_FOLDER + 'results_' + str(epoch) + '.txt'
+        cfg.path.outputFile = cfg.path.resultsFolder + 'results_' + str(epoch) + '.txt'
         ave_recall, average_similarity_score, ave_one_percent_recall = evaluate.evaluate_model(model, tqdm_flag=True)
         print('EVAL %% RECALL: %s' % str(ave_one_percent_recall))
 
