@@ -46,8 +46,8 @@ __C.train.negatives_per_query = 2
 __C.train.hard_neg_per_query = 2
 
 __C.loss = edict()
-__C.loss.margin1 = 0.5
-__C.loss.margin2 = 0.2
+__C.loss.margin_1 = 0.5
+__C.loss.margin_2 = 0.2
 __C.loss.triplet_use_best_positives = True
 __C.loss.loss_lazy = True
 __C.loss.ignore_zero_loss = False
