@@ -200,7 +200,7 @@ def train_one_epoch(model, device, division_epoch, TOTAL_ITERATIONS, optimizer, 
 
 
 if __name__ == "__main__":
-    trainMode = 1
+    trainMode = 0
     cudnn.enabled = cfg.train.cudnn
     if trainMode:
         print("Start Train!")

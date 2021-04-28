@@ -40,7 +40,7 @@ def get_queries_dict(filename):
 
 def load_pc_file(filename):
     # returns Nx3 matrix
-    pc = np.load(os.path.join(filename))
+    pc = np.load(os.path.join("BenchmarkDatasets", filename))
 
     if pc.shape[0] != 4096:
         print("Error in pointcloud shape")
@@ -122,8 +122,8 @@ def update_vectors(model, device, tqdm_flag=True):
 
         output = output.detach().cpu().numpy()
         output = np.squeeze(output)
-        if (q_output.shape[0] != 0):
-            q_output = np.vstack((q_output, output.reshape(-1,cfg.FEATURE_OUTPUT_DIM)))
+        if q_output.shape[0] != 0:
+            q_output = np.vstack((q_output, output.reshape(-1, cfg.train.featureDim)))
         else:
             q_output = output
     del queries_tensor
