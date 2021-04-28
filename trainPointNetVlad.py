@@ -115,9 +115,9 @@ def train():
         sys.exit(999)
 
     loader_base = DataLoader(Oxford_train_base(args=cfg.train), batch_size=cfg.train.batchQueries,
-                             shuffle=False, drop_last=True, num_workers=4)
+                             shuffle=False, drop_last=True, num_workers=0)
     loader_advance = DataLoader(Oxford_train_advance(args=cfg.train, model=model, device=device), batch_size=cfg.train.batchQueries,
-                                shuffle=False, drop_last=True, num_workers=4)
+                                shuffle=False, drop_last=True, num_workers=0)
 
     if starting_epoch > division_epoch + 1:
         update_vectors(model, device)
@@ -126,6 +126,7 @@ def train():
     scheduler = ReduceLROnPlateau(optimizer, 'max', factor=0.2, patience=2, verbose=True, threshold=0.1, min_lr=0.00001)
 
     for epoch in range(starting_epoch, cfg.train.maxEpoch):
+        epoch += 8
         print('**** EPOCH %03d ****' % epoch)
         TOTAL_ITERATIONS = train_one_epoch(model, device, division_epoch, TOTAL_ITERATIONS, optimizer, train_writer,
                                            loss_function, epoch, loader_base, loader_advance)
