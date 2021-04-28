@@ -116,7 +116,7 @@ def train():
 
     loader_base = DataLoader(Oxford_train_base(args=cfg.train), batch_size=cfg.train.batchQueries,
                              shuffle=False, drop_last=True, num_workers=4)
-    loader_advance = DataLoader(Oxford_train_advance(args=cfg.train, model=model), batch_size=cfg.train.batchQueries,
+    loader_advance = DataLoader(Oxford_train_advance(args=cfg.train, model=model, device=device), batch_size=cfg.train.batchQueries,
                                 shuffle=False, drop_last=True, num_workers=4)
 
     if starting_epoch > division_epoch + 1:

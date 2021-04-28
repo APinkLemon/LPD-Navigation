@@ -154,7 +154,7 @@ def get_query_tuple(dict_value, num_pos, num_neg, QUERY_DICT, hard_neg=[], other
 
     neg_files = []
     neg_indices = []
-    if(len(hard_neg) == 0):
+    if len(hard_neg) == 0:
         random.shuffle(dict_value["negatives"])
         for i in range(num_neg):
             neg_files.append(QUERY_DICT[dict_value["negatives"][i]]["query"])
@@ -205,7 +205,7 @@ def get_query_tuple_fast(item, dict_value, num_pos, num_neg, QUERY_DICT, hard_ne
     positives = TRAINING_POINT_CLOUD[(dict_value["positives"][:num_pos])]
 
     neg_indices = []
-    if(len(hard_neg) == 0):
+    if len(hard_neg) == 0:
         random.shuffle(dict_value["negatives"])
         neg_indices=dict_value["negatives"][:num_neg]
     else:
@@ -336,8 +336,9 @@ class Oxford_train_base(Dataset):
 
 
 class Oxford_train_advance(Dataset):
-    def __init__(self, args, model):
+    def __init__(self, args, model, device):
         self.model = model
+        self.device = device
         self.num_points = args.numPoints
         self.positives_per_query = args.positives_per_query
         self.negatives_per_query = args.negatives_per_query
@@ -352,16 +353,16 @@ class Oxford_train_advance(Dataset):
         self.last = []
 
     def __getitem__(self, item):
-        if (len(TRAINING_QUERIES[item]["positives"]) < self.positives_per_query):
+        if len(TRAINING_QUERIES[item]["positives"]) < self.positives_per_query:
             if self.last == []:
                 print("wrong")
             else:
                 return self.last[0], self.last[1], self.last[2], self.last[3]
 
-        if (len(HARD_NEGATIVES.keys()) == 0):
+        if len(HARD_NEGATIVES.keys()) == 0:
             from time import time
             start = time()
-            query = get_feature_representation(TRAINING_QUERIES[item]['query'], self.model)
+            query = get_feature_representation(TRAINING_QUERIES[item]['query'], self.model, self.device)
             random.shuffle(TRAINING_QUERIES[item]['negatives'])
             negatives = TRAINING_QUERIES[item]['negatives'][0:self.sampled_neg]
             hard_negs = get_random_hard_negatives(query, negatives, self.hard_neg_num)
@@ -376,7 +377,7 @@ class Oxford_train_advance(Dataset):
         #     如果指定了一些HARD_NEGATIVES，實際沒有
         else:
             query = get_feature_representation(
-                TRAINING_QUERIES[item]['query'], self.model)
+                TRAINING_QUERIES[item]['query'], self.model, self.device)
             random.shuffle(TRAINING_QUERIES[item]['negatives'])
             negatives = TRAINING_QUERIES[item
                         ]['negatives'][0:self.sampled_neg]
