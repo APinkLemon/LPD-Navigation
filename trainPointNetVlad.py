@@ -126,7 +126,6 @@ def train():
     scheduler = ReduceLROnPlateau(optimizer, 'max', factor=0.2, patience=2, verbose=True, threshold=0.1, min_lr=0.00001)
 
     for epoch in range(starting_epoch, cfg.train.maxEpoch):
-        epoch += 8
         print('**** EPOCH %03d ****' % epoch)
         TOTAL_ITERATIONS = train_one_epoch(model, device, division_epoch, TOTAL_ITERATIONS, optimizer, train_writer,
                                            loss_function, epoch, loader_base, loader_advance)
@@ -201,7 +200,7 @@ def train_one_epoch(model, device, division_epoch, TOTAL_ITERATIONS, optimizer, 
 
 
 if __name__ == "__main__":
-    trainMode = 1
+    trainMode = 0
     cudnn.enabled = cfg.train.cudnn
     if trainMode:
         print("Start Train!")
