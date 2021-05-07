@@ -24,7 +24,7 @@ def save_model(model, epoch, optimizer, ave_one_percent_recall, best_ave_one_per
     else:
         model_to_save = model
 
-    save_name = cfg.path.savePath + '/' + str(epoch) + "-" + cfg.path.saveFile
+    save_name = cfg.path.savePath + '/' + str(epoch) + "-" + cfg.path.saveFile + ".ckpt"
     torch.save({
         'epoch': epoch,
         'iter': TOTAL_ITERATIONS,
@@ -36,7 +36,7 @@ def save_model(model, epoch, optimizer, ave_one_percent_recall, best_ave_one_per
 
     if best_ave_one_percent_recall < ave_one_percent_recall:
         best_ave_one_percent_recall = ave_one_percent_recall
-        save_name = cfg.path.savePath + '/' + "best" + "-" + cfg.path.saveFile
+        save_name = cfg.path.savePath + '/' + "best" + "-" + cfg.path.saveFile + ".ckpt"
         torch.save({
             'epoch': epoch,
             'iter': TOTAL_ITERATIONS,
@@ -135,7 +135,7 @@ def train():
         ave_recall, average_similarity_score, ave_one_percent_recall = evaluate.evaluate_model(model, tqdm_flag=True)
         print('EVAL %% RECALL: %s' % str(ave_one_percent_recall))
 
-        TOTAL_ITERATIONS = save_model(model, epoch, optimizer, ave_one_percent_recall,
+        best_ave_one_percent_recall = save_model(model, epoch, optimizer, ave_one_percent_recall,
                                       best_ave_one_percent_recall, TOTAL_ITERATIONS)
         scheduler.step(ave_one_percent_recall)
         train_writer.add_scalar("Val Recall", ave_one_percent_recall, epoch)
@@ -200,7 +200,7 @@ def train_one_epoch(model, device, division_epoch, TOTAL_ITERATIONS, optimizer, 
 
 
 if __name__ == "__main__":
-    trainMode = 0
+    trainMode = 1
     cudnn.enabled = cfg.train.cudnn
     if trainMode:
         print("Start Train!")

@@ -14,8 +14,8 @@ __C.path.raw = "dataEvaluate1/"
 __C.path.query = "GenerateDataBase/"
 __C.path.data = "GenerateDataBase/"
 __C.path.pretrain = "Pretrain/best-model1"
-__C.path.savePath = "Model"
-__C.path.saveFile = "model1"
+__C.path.savePath = "CheckPoints"
+__C.path.saveFile = "model3"
 __C.path.logDir = "TrainWriter"
 __C.path.resultsFolder = "results/"
 __C.path.outputFile = " "
@@ -51,7 +51,7 @@ __C.loss = edict()
 __C.loss.margin_1 = 0.5
 __C.loss.margin_2 = 0.2
 __C.loss.triplet_use_best_positives = True
-__C.loss.loss_lazy = True
+__C.loss.loss_lazy = False
 __C.loss.ignore_zero_loss = False
 
 
